@@ -18,14 +18,16 @@ class Bt2310 extends StatelessWidget {
         ),
         actions: const [Icon(Icons.menu), SizedBox(width: 20)],
       ),
-      body: const Column(
+      body: Column(
         children: [
-          Padding(
-              padding: EdgeInsets.all(20),
-              child: SizedBox(
-                width: double.infinity,
-                height: 200,
-              ))
+          AspectRatio(
+            aspectRatio: 2 / 1,
+            child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Container(
+                  color: Colors.blueGrey,
+                )),
+          )
         ],
       ),
     );
