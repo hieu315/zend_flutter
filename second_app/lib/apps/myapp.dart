@@ -5,6 +5,7 @@ import 'package:second_app/pages/b04_bt06.dart';
 import 'package:second_app/pages/b04_bt07.dart';
 import 'package:second_app/pages/b04_bt08.dart';
 import 'package:second_app/pages/b04_bt09.dart';
+import 'package:second_app/pages/b05_bt01.dart';
 import 'package:second_app/pages/bt01_2410.dart';
 import 'package:second_app/pages/bt_06.dart';
 import 'package:second_app/pages/walkthrough_02.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: B04Bt09(),
+      home: B05Bt01(),
       debugShowCheckedModeBanner: false,
     );
   }
