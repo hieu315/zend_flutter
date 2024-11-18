@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:second_app/utils/get_size.dart';
+import '../utils/get_size.dart';
 
 class ButtonCustom extends StatelessWidget {
   ButtonCustom({
@@ -7,12 +7,14 @@ class ButtonCustom extends StatelessWidget {
     this.backgroundColor = const Color(0xff7743DB),
     required this.onPress,
     this.title = "",
+    this.borderColor = const Color(0xff7743DB),
     this.borderWidth = 2.0,
   });
 
   Color backgroundColor;
   Function() onPress;
   String title;
+  Color borderColor;
   double borderWidth;
 
   @override
@@ -26,7 +28,7 @@ class ButtonCustom extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.all(Radius.circular(5)),
             side: BorderSide(
-              color: backgroundColor == const Color(0xff7743DB)
+              color: borderColor == const Color(0xff7743DB)
                   ? Colors.white
                   : const Color(0xff7743DB),
               width: borderWidth,

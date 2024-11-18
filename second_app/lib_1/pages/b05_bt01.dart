@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:second_app/utils/get_size.dart';
-import 'package:second_app/widget/button_custom.dart';
-import 'package:second_app/widget/custom_text_field.dart';
+import '../utils/get_size.dart';
+import '../widget/button_custom.dart';
+import '../widget/custom_text_field.dart';
 
 class B05Bt01 extends StatelessWidget {
   const B05Bt01({super.key});
