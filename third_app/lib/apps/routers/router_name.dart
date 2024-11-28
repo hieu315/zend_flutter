@@ -4,4 +4,5 @@ class RouterName {
   static const loginPage = '/loginPage';
   static const cartPage = '/cartPage';
   static const root = '/root';
+  static const settingPage = '/settingPage';
 }

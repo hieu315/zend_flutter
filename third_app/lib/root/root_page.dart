@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:third_app/pages/cart/cart_page.dart';
 import 'package:third_app/pages/home/home_page.dart';
 import 'package:third_app/pages/login/login_page.dart';
+import 'package:third_app/pages/setting/setting_page.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({super.key});
@@ -11,7 +12,11 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  List<Widget> listPage = [const HomePage(), const CartPage()];
+  List<Widget> listPage = [
+    const HomePage(),
+    const SettingPage(),
+    const CartPage()
+  ];
   int index = 0;
   @override
   Widget build(BuildContext context) {
@@ -19,6 +24,7 @@ class _RootPageState extends State<RootPage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Setting"),
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag_outlined), label: "Cart"),
         ],
