@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SettingProvider extends ChangeNotifier {
-  int number = 0;
+class SettingProvider with ChangeNotifier {
+  ThemeMode _themeMode = ThemeMode.light;
 
-  void add() {
-    number++;
-    notifyListeners();
-  }
+  ThemeMode get themeMode => _themeMode;
 
-  void minus() {
-    number--;
+  void toggleTheme() {
+    _themeMode =
+        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
   }
 }

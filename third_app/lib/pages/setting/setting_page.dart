@@ -2,35 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:third_app/providers/setting_provider.dart';
 
-class SettingPage extends StatefulWidget {
+class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
 
   @override
-  State<SettingPage> createState() => _SettingPageState();
-}
-
-class _SettingPageState extends State<SettingPage> {
-  int value = 0;
-  @override
   Widget build(BuildContext context) {
+    final settingProvider = Provider.of<SettingProvider>(context);
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings Page'),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-                onPressed: () {
-                  context.read<SettingProvider>().add();
-                },
-                child: const Text("+")),
-            Consumer<SettingProvider>(
-                builder: (context, provider, child) =>
-                    (Text(provider.number.toString()))),
-            ElevatedButton(
-                onPressed: () {
-                  context.read<SettingProvider>().minus();
-                },
-                child: const Text("-")),
+            Icon(
+              settingProvider.themeMode == ThemeMode.dark
+                  ? Icons.nights_stay
+                  : Icons.wb_sunny,
+              size: 100,
+              color: settingProvider.themeMode == ThemeMode.dark
+                  ? Colors.yellow
+                  : Colors.orange,
+            ),
+            Text(
+                settingProvider.themeMode == ThemeMode.dark
+                    ? "Dark Theme"
+                    : "Light Theme",
+                style: Theme.of(context).textTheme.headlineMedium),
+            Switch(
+              value: settingProvider.themeMode == ThemeMode.dark,
+              onChanged: (value) {
+                settingProvider.toggleTheme();
+              },
+            ),
           ],
         ),
       ),
