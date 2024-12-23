@@ -1,35 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:news_app/providers/home_provider.dart';
+import 'package:news_app/providers/setting_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final selectedCategoryIds =
+        context.watch<SettingProvider>().listId.cast<int>();
+
+    // Only call fetchArticlesForCategories if it's not already done
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context
+          .read<HomeProvider>()
+          .fetchArticlesForCategories(selectedCategoryIds);
+    });
+    print(selectedCategoryIds);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
       ),
-      body: FutureBuilder(
-        future: context.read<HomeProvider>().fetchCategoriesAndArticles(),
+      body: StreamBuilder<Map<int, List>>(
+        stream: context.watch<HomeProvider>().categoryStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
+
           if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
+            return Center(child: Text('Error: ${snapshot.error}'));
           }
 
-          final categories = context.watch<HomeProvider>().categories;
-          final categoryArticles =
-              context.watch<HomeProvider>().categoryArticles;
+          final categoryArticles = snapshot.data ?? {};
+
+          if (categoryArticles.isEmpty) {
+            return const Center(child: Text("No articles available."));
+          }
 
           return ListView.builder(
-            itemCount: categories.length,
+            itemCount: categoryArticles.keys.length,
             itemBuilder: (context, index) {
-              final category = categories[index];
-              final articles = categoryArticles[category['id']] ?? [];
+              final categoryId = categoryArticles.keys.elementAt(index);
+              final articles = categoryArticles[categoryId] ?? [];
+              final category =
+                  articles.isNotEmpty ? articles[0]['category'] : {};
+              final categoryName = category['name'] ?? 'Unknown Category';
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +57,7 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          category['name'],
+                          categoryName,
                           style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),

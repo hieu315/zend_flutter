@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/apps/routers/router_name.dart';
 import 'package:news_app/pages/articles_page/articles_page.dart';
 import 'package:news_app/pages/home_page/home_page.dart';
+import 'package:news_app/pages/settings_page/settings_page.dart';
 import 'package:news_app/providers/article_provider.dart';
 import 'package:news_app/providers/home_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:news_app/pages/settings_page/settings_page.dart';
 import 'package:news_app/providers/setting_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -43,9 +44,14 @@ class MyApp extends StatelessWidget {
           create: (_) => HomeProvider(),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomePage(),
+        home: const HomePage(),
+        routes: {
+          RouterName.homePage: (_) => const HomePage(),
+          RouterName.articlePage: (_) => const ArticlesPage(),
+          RouterName.settingPage: (_) => const SettingsPage()
+        },
       ),
     );
   }

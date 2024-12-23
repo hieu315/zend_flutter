@@ -9,7 +9,12 @@ class ArticlesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Articles"),
+        centerTitle: true,
+        backgroundColor: const Color(0xffFFBA4B),
+        title: const Text(
+          "Articles",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: FutureBuilder(
         future: context.read<ArticlesProvider>().fetchArticlesForCategory(1),

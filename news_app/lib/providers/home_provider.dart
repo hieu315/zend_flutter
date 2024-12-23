@@ -1,21 +1,35 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:news_app/repositories/categories_repo.dart';
 import 'package:news_app/repositories/article_repo.dart';
 
 class HomeProvider with ChangeNotifier {
-  List categories = [];
   Map<int, List> categoryArticles = {};
+  final StreamController<Map<int, List>> _categoryStreamController =
+      StreamController<Map<int, List>>.broadcast();
 
-  Future<void> fetchCategoriesAndArticles() async {
-    categories = await CategoriesRepo.getAllCategories();
+  // Public getter for stream
+  Stream<Map<int, List>> get categoryStream => _categoryStreamController.stream;
 
-    for (var category in categories) {
-      int categoryId = category['id'];
-      categoryArticles[categoryId] = await ArticlesRepo.getArticlesForCategory(
+  Future<void> fetchArticlesForCategories(List<int> categoryIds) async {
+    // Clear previous articles if any
+    categoryArticles.clear();
+
+    for (int categoryId in categoryIds) {
+      final articles = await ArticlesRepo.getArticlesForCategory(
         categoryId: categoryId,
         limit: 4,
       );
+      categoryArticles[categoryId] = articles;
     }
-    notifyListeners();
+    print('Fetched articles: $categoryArticles');
+
+    _categoryStreamController
+        .add(categoryArticles); // Emit updated data to the stream
+  }
+
+  @override
+  void dispose() {
+    _categoryStreamController.close();
+    super.dispose();
   }
 }
