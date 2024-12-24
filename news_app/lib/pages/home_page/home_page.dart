@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/apps/routers/router_name.dart';
 import 'package:provider/provider.dart';
 import 'package:news_app/providers/home_provider.dart';
 import 'package:news_app/providers/setting_provider.dart';
@@ -11,16 +12,51 @@ class HomePage extends StatelessWidget {
     final selectedCategoryIds =
         context.watch<SettingProvider>().listId.cast<int>();
 
-    // Only call fetchArticlesForCategories if it's not already done
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context
-          .read<HomeProvider>()
-          .fetchArticlesForCategories(selectedCategoryIds);
-    });
+    context
+        .read<HomeProvider>()
+        .fetchArticlesForCategories(selectedCategoryIds);
+
     print(selectedCategoryIds);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home"),
+      appBar: AppBar(),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+              child: const Text(
+                'News App',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  RouterName.homePage,
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  RouterName.settingPage,
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: StreamBuilder<Map<int, List>>(
         stream: context.watch<HomeProvider>().categoryStream,
@@ -63,7 +99,14 @@ class HomePage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            // Navigate to "View All" page
+                            Navigator.pushNamed(
+                              context,
+                              RouterName.articlePage,
+                              arguments: {
+                                'id': categoryId,
+                                'name': categoryName
+                              },
+                            );
                           },
                           child: const Text("View All"),
                         ),

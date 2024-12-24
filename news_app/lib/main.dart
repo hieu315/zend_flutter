@@ -46,11 +46,31 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const HomePage(),
-        routes: {
-          RouterName.homePage: (_) => const HomePage(),
-          RouterName.articlePage: (_) => const ArticlesPage(),
-          RouterName.settingPage: (_) => const SettingsPage()
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: ThemeMode.system,
+        initialRoute: RouterName.homePage,
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case RouterName.homePage:
+              return MaterialPageRoute(
+                builder: (_) => const HomePage(),
+              );
+            case RouterName.articlePage:
+              final arguments = settings.arguments as Map?;
+              return MaterialPageRoute(
+                builder: (_) => const ArticlesPage(),
+                settings: RouteSettings(arguments: arguments),
+              );
+            case RouterName.settingPage:
+              return MaterialPageRoute(
+                builder: (_) => const SettingsPage(),
+              );
+            default:
+              return MaterialPageRoute(
+                builder: (_) => const HomePage(),
+              );
+          }
         },
       ),
     );

@@ -7,11 +7,9 @@ class HomeProvider with ChangeNotifier {
   final StreamController<Map<int, List>> _categoryStreamController =
       StreamController<Map<int, List>>.broadcast();
 
-  // Public getter for stream
   Stream<Map<int, List>> get categoryStream => _categoryStreamController.stream;
 
   Future<void> fetchArticlesForCategories(List<int> categoryIds) async {
-    // Clear previous articles if any
     categoryArticles.clear();
 
     for (int categoryId in categoryIds) {
@@ -21,10 +19,8 @@ class HomeProvider with ChangeNotifier {
       );
       categoryArticles[categoryId] = articles;
     }
-    print('Fetched articles: $categoryArticles');
 
-    _categoryStreamController
-        .add(categoryArticles); // Emit updated data to the stream
+    _categoryStreamController.add(categoryArticles);
   }
 
   @override
