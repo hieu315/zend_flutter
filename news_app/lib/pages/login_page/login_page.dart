@@ -71,13 +71,15 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     onPressed: auth.isLoading
                         ? null
-                        : () {
+                        : () async {
                             if (_formKey.currentState!.validate()) {
-                              auth.signIn(
+                              await auth.signIn(
                                 _emailController.text,
                                 _passwordController.text,
                               );
-                              Navigator.pop(context);
+                              if (auth.user != null) {
+                                Navigator.pop(context);
+                              }
                             }
                           },
                     child: auth.isLoading
