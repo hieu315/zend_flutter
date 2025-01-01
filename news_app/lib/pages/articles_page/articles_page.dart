@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/providers/article_provider.dart';
 import 'package:provider/provider.dart';
+import '../widgets/shimmer.dart';
 
 class ArticlesPage extends StatelessWidget {
   const ArticlesPage({super.key});
@@ -25,7 +26,12 @@ class ArticlesPage extends StatelessWidget {
             .fetchArticlesForCategory(categoryId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return const ShimmerListItem();
+              },
+            );
           }
           if (snapshot.hasError) {
             return Center(child: Text("Error: ${snapshot.error}"));
@@ -41,18 +47,19 @@ class ArticlesPage extends StatelessWidget {
               final article = articles[index];
 
               return ListTile(
-                leading: article['thumb'] != null
-                    ? Image.network(
-                        article['thumb'],
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                      )
-                    : const SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: Icon(Icons.image, color: Colors.grey),
-                      ),
+                leading: Image.network(
+                  article['thumb'],
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, _, __) {
+                    return const SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Icon(Icons.image, color: Colors.grey),
+                    );
+                  },
+                ),
                 title: Text(
                   article['title'],
                   style: const TextStyle(color: Color(0xffFFBD4A)),

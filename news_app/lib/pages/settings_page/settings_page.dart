@@ -50,9 +50,9 @@ class SettingsPage extends StatelessWidget {
                           data[index]['name'],
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        value: provider.listId.contains(index),
+                        value: provider.listId.contains(data[index]['id']),
                         onChanged: (_) {
-                          provider.checkBox(index);
+                          provider.checkBox(data[index]['id']);
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),

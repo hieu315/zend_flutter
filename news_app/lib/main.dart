@@ -1,15 +1,20 @@
 import 'dart:io';
 
 import 'package:dio/io.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/apps/routers/router_name.dart';
 import 'package:news_app/pages/articles_page/articles_page.dart';
 import 'package:news_app/pages/home_page/home_page.dart';
+import 'package:news_app/pages/login_page/login_page.dart';
+import 'package:news_app/pages/settings_page/category_selection.dart';
 import 'package:news_app/pages/settings_page/settings_page.dart';
 import 'package:news_app/providers/article_provider.dart';
+import 'package:news_app/providers/auth_provider.dart';
 import 'package:news_app/providers/home_provider.dart';
 import 'package:news_app/providers/setting_provider.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -20,10 +25,13 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main(List<String> args) {
+void main(List<String> args) async {
   HttpOverrides.global = MyHttpOverrides();
 
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -43,15 +51,26 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => HomeProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         themeMode: ThemeMode.system,
-        initialRoute: RouterName.homePage,
+        initialRoute: RouterName.categorySelectionPage,
         onGenerateRoute: (settings) {
           switch (settings.name) {
+            case RouterName.categorySelectionPage:
+              return MaterialPageRoute(
+                builder: (_) => const CategorySelectionPage(),
+              );
+            case RouterName.loginPage:
+              return MaterialPageRoute(
+                builder: (_) => const LoginPage(),
+              );
             case RouterName.homePage:
               return MaterialPageRoute(
                 builder: (_) => const HomePage(),

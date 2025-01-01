@@ -9,7 +9,8 @@ class HomeProvider with ChangeNotifier {
 
   Stream<Map<int, List>> get categoryStream => _categoryStreamController.stream;
 
-  Future<void> fetchArticlesForCategories(List<int> categoryIds) async {
+  Future<Map<int, List>> fetchArticlesForCategories(
+      List<int> categoryIds) async {
     categoryArticles.clear();
 
     for (int categoryId in categoryIds) {
@@ -19,8 +20,7 @@ class HomeProvider with ChangeNotifier {
       );
       categoryArticles[categoryId] = articles;
     }
-
-    _categoryStreamController.add(categoryArticles);
+    return categoryArticles;
   }
 
   @override
